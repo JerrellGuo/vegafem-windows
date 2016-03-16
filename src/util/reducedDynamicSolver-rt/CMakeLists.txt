@@ -1,0 +1,64 @@
+include_directories(
+   ${CMAKE_CURRENT_SOURCE_DIR}
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libcamera
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libconfigFile
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libcorotationalLinearFEM
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libelasticForceModel
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libforceModel
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libgetopts
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libgraph
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libinsertRows
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libintegrator
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libintegratorSparse
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libisotropicHyperelasticFEM
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../liblighting
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libloadList
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libmassSpringSystem
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libminivector
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libobjMesh
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libperformanceCounter
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libpolarDecomposition
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libsceneObject
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libsparseMatrix
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libsparseSolver
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libstvk
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libvolumetricMesh
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libreducedForceModel
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libreducedElasticForceModel
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libobjMeshGPUDeformer
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libintegratorDense
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libreducedStvk
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libsceneObjectReduced
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libmodalMatrix
+   ${CMAKE_SOURCE_DIR}/include
+)
+
+add_executable(reducedDeformsim reducedDynamicSolver-rt.cpp initGraphics.cpp)
+if(x64)
+	target_link_libraries(reducedDeformsim  integratorDense objMeshGPUDeformer objMesh imageIO modalMatrix sceneObjectReduced sceneObject   
+	integratorSparse integrator reducedStvk stvk reducedElasticForceModel 
+	reducedForceModel forceModel matrix matrixIO lighting configFile volumetricMesh loadList getopts camera minivector openGLHelper
+	${CMAKE_SOURCE_DIR}/lib/x64/pthreadVC2_x64.lib 
+	glui32 ${CMAKE_SOURCE_DIR}/GL/lib/Windows/x64/freeglut.lib ${CMAKE_SOURCE_DIR}/lib/x64/cg.lib ${CMAKE_SOURCE_DIR}/lib/x64/cgGL.lib 
+	${MKL_DIR}/mkl_rt.lib
+       # ${MKL_DIR}/mkl_blacs_ilp64_dll.lib
+       # ${MKL_DIR}/mkl_core_dll.lib
+       # ${MKL_DIR}/mkl_intel_ilp64_dll.lib
+       # ${MKL_DIR}/mkl_intel_thread_dll.lib
+       # ${MKL_DIR}/libiomp5md.lib
+	${GLUT_LIBRARY})
+else(x64)
+	target_link_libraries(reducedDeformsim  integratorDense objMeshGPUDeformer objMesh imageIO modalMatrix sceneObjectReduced sceneObject   
+	integratorSparse integrator reducedStvk stvk reducedElasticForceModel 
+	reducedForceModel forceModel matrix matrixIO lighting configFile volumetricMesh loadList getopts camera minivector openGLHelper
+	${CMAKE_SOURCE_DIR}/lib/pthreadVC2.lib 
+	glui32 ${CMAKE_SOURCE_DIR}/GL/lib/Windows/freeglut.lib ${CMAKE_SOURCE_DIR}/lib/cg.lib ${CMAKE_SOURCE_DIR}/lib/cgGL.lib 
+	${MKL_WIN32_DIR}/mkl_blacs_intelmpi_lp64.lib
+        ${MKL_WIN32_DIR}/mkl_core.lib
+        ${MKL_WIN32_DIR}/mkl_intel_lp64.lib
+        ${MKL_WIN32_DIR}/mkl_intel_thread.lib
+	${MKL_WIN32_DIR}/libiomp5md.lib
+	${GLUT_LIBRARY}
+	)
+endif(x64)
+

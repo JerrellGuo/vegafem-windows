@@ -1,0 +1,16 @@
+include_directories(
+   ${CMAKE_CURRENT_SOURCE_DIR}
+   ${CMAKE_SOURCE_DIR}/include
+   ${CMAKE_SOURCE_DIR}/src/libreducedForceModel
+   ${PARDISO_INCLUDE}
+	)
+
+set(integratordense_srcs
+	centralDifferencesDense.cpp
+	implicitBackwardEulerDense.cpp
+	implicitNewmarkDense.cpp
+	integratorBaseDense.cpp
+	)
+
+add_library(integratorDense   ${integratordense_srcs})
+target_link_libraries(integratorDense matrix integrator performanceCounter reducedForceModel )

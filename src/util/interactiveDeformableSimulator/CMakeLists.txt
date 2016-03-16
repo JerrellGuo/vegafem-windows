@@ -1,0 +1,56 @@
+include_directories(
+   ${CMAKE_CURRENT_SOURCE_DIR}
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libcamera
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libconfigFile
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libcorotationalLinearFEM
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libelasticForceModel
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libforceModel
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libgetopts
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libgraph
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libinsertRows
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libintegrator
+	${CMAKE_CURRENT_SOURCE_DIR}/../../libintegratorSparse
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libisotropicHyperelasticFEM
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../liblighting
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libloadList
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libmassSpringSystem
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libminivector
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libobjMesh
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libperformanceCounter
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libpolarDecomposition
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libsceneObject
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libsparseMatrix
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libsparseSolver
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libstvk
+   ${CMAKE_CURRENT_SOURCE_DIR}/../../libvolumetricMesh
+   ${CMAKE_SOURCE_DIR}/include
+)
+
+
+add_executable(deformsim interactiveDeformableSimulator.cpp initGraphics.cpp)
+if(x64)
+	target_link_libraries(deformsim sceneObject integrator integratorSparse
+	elasticForceModel forceModel sparseMatrix loadList insertRows lighting configFile volumetricMesh getopts 
+	camera graph isotropicHyperelasticFEM minivector stvk corotationalLinearFEM 
+	polarDecomposition massSpringSystem objMesh sparseSolver ${CMAKE_SOURCE_DIR}/lib/x64/pthreadVC2_x64.lib
+	glui32 ${CMAKE_SOURCE_DIR}/GL/lib/Windows/x64/freeglut.lib ${GLUT_LIBRARY}
+	${MKL_DIR}/mkl_blacs_ilp64_dll.lib
+        ${MKL_DIR}/mkl_core_dll.lib
+        ${MKL_DIR}/mkl_intel_ilp64_dll.lib
+        ${MKL_DIR}/mkl_intel_thread_dll.lib
+	${MKL_DIR}/libiomp5md.lib)
+else(x64)
+	target_link_libraries(deformsim sceneObject integrator integratorSparse
+	elasticForceModel forceModel sparseMatrix loadList insertRows lighting configFile volumetricMesh getopts 
+	camera graph isotropicHyperelasticFEM minivector stvk corotationalLinearFEM 
+	polarDecomposition massSpringSystem objMesh sparseSolver ${CMAKE_SOURCE_DIR}/lib/pthreadVC2.lib ${CMAKE_SOURCE_DIR}/lib/pthreadVCE2.lib ${CMAKE_SOURCE_DIR}/lib/pthreadVSE2.lib
+	glui32 ${CMAKE_SOURCE_DIR}/GL/lib/Windows/freeglut.lib ${GLUT_LIBRARY}
+	 ${MKL_WIN32_DIR}/mkl_blacs_intelmpi_lp64.lib
+     ${MKL_WIN32_DIR}/mkl_core.lib
+     ${MKL_WIN32_DIR}/mkl_intel_lp64.lib
+     ${MKL_WIN32_DIR}/mkl_intel_thread.lib
+	 ${MKL_WIN32_DIR}/libiomp5md.lib)
+endif(x64)
+
+	
+
